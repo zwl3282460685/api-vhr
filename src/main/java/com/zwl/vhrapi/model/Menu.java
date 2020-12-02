@@ -1,5 +1,7 @@
 package com.zwl.vhrapi.model;
 
+import java.util.List;
+
 public class Menu {
     private Integer id;
 
@@ -13,9 +15,24 @@ public class Menu {
 
     private String iconcls;
 
-    private Boolean keepalive;
+    private Meta meta;
+    private List<Menu> children;
 
-    private Boolean requireauth;
+    public List<Menu> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Menu> children) {
+        this.children = children;
+    }
+
+    public Meta getMeta() {
+        return meta;
+    }
+
+    public void setMeta(Meta meta) {
+        this.meta = meta;
+    }
 
     private Integer parentid;
 
@@ -69,21 +86,6 @@ public class Menu {
         this.iconcls = iconcls == null ? null : iconcls.trim();
     }
 
-    public Boolean getKeepalive() {
-        return keepalive;
-    }
-
-    public void setKeepalive(Boolean keepalive) {
-        this.keepalive = keepalive;
-    }
-
-    public Boolean getRequireauth() {
-        return requireauth;
-    }
-
-    public void setRequireauth(Boolean requireauth) {
-        this.requireauth = requireauth;
-    }
 
     public Integer getParentid() {
         return parentid;

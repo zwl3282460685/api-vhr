@@ -3,7 +3,7 @@ package com.zwl.vhrapi.service;
 import com.zwl.vhrapi.mapper.MenuMapper;
 import com.zwl.vhrapi.model.Hr;
 import com.zwl.vhrapi.model.Menu;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +17,13 @@ public class MenuService {
     MenuMapper menuMapper;
 
     public List<Menu> getMenusByHrId(){
-        return menuMapper.getMenusByHrId(((Hr)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
+        return menuMapper.getMenusByHrId(((Hr)SecurityContextHolder.getContext().getAuthentication().
+                getPrincipal()).getId());
     }
+
+    //@Cacheable
+    public List<Menu> getAllMenusWithRole() {
+        return menuMapper.getAllMenusWithRole();
+    }
+
 }

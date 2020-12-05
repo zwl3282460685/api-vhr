@@ -31,9 +31,24 @@
       </association>
     </collection>
   </resultMap>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, url, path, component, name, iconCls, keepAlive, requireAuth, parentId, enabled
   </sql>
+  <resultMap id="MenuWithRole" type="com.zwl.vhrapi.model.Menu" extends="BaseResultMap">
+    <collection property="roles" ofType="com.zwl.vhrapi.model.Role">
+      <id column="rid" property="id"/>
+      <result column="rname" property="name"/>
+      <result column="rnameZh" property="namezh"/>
+    </collection>
+  </resultMap>
+  <select id="getAllMenusWithRole" resultMap="MenuWithRole" >
+    select m.*, r.id as rid, r.`name` as rname, r.nameZh as rnameZh
+    from
+    menu m, menu_role mr, role r
+    WHERE m.id=mr.mid and mr.rid=r.id
+    ORDER BY m.id
+  </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

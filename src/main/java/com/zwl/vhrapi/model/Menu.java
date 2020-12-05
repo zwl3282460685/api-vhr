@@ -1,5 +1,6 @@
 package com.zwl.vhrapi.model;
 
+
 import java.util.List;
 
 public class Menu {
@@ -17,6 +18,15 @@ public class Menu {
 
     private Meta meta;
     private List<Menu> children;
+    private List<Role> roles;
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
 
     public List<Menu> getChildren() {
         return children;

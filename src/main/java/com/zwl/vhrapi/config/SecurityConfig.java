@@ -7,6 +7,7 @@ import com.zwl.vhrapi.service.HrService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.*;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -15,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -31,6 +33,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
     HrService hrService;
+
+    @Resource
+    CustomerFilterInvocationSecurityMetadataSource myFilter;
+
+    @Resource
+    CustomerUrlDecisionManager myDecisionManager;
 
     @Bean
     PasswordEncoder passwordEncoder(){
@@ -51,14 +59,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/swagger-resources", // 用来获取api-docs的URI
                 "/swagger-resources/configuration/security", // 安全选项
                 "/swagger-resources/**",
-                //补充路径，近期在搭建swagger接口文档时，通过浏览器控制台发现该/webjars路径下的文件被拦截，故加上此过滤条件即可。(2020-10-23)
-                "/webjars/**");
+                "/webjars/**",  //补充路径，近期在搭建swagger接口文档时，通过浏览器控制台发现该/webjars路径下的文件被拦截，故加上此过滤条件即可。
+                "/login");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .anyRequest().authenticated()
+//                .anyRequest().authenticated()
+                .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+                    @Override
+                    public <O extends FilterSecurityInterceptor> O postProcess(O o) {
+                        o.setAccessDecisionManager(myDecisionManager);
+                        o.setSecurityMetadataSource(myFilter);
+                        return o;
+                    }
+                })
                 .and()
                 .formLogin()
                 .usernameParameter("username")

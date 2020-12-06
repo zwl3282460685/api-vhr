@@ -26,4 +26,8 @@ public class MenuService {
         return menuMapper.getAllMenusWithRole();
     }
 
+    //获取所有的菜单项
+    public List<Menu> getAllMenus() {
+        return menuMapper.getAllMenus();
+    }
 }

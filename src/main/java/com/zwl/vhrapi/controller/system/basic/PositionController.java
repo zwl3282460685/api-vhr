@@ -54,6 +54,15 @@ public class PositionController {
         if(positionService.deletePosition(id) == 1){
             return RespBean.ok("删除成功");
         }
-        return RespBean.error("/删除失败");
+        return RespBean.error("删除失败");
+    }
+
+    @DeleteMapping("/")
+    @ApiOperation("批量删除职位信息")
+    public RespBean deletePositionByIds(Integer[] ids){
+        if(positionService.deletePositionByIds(ids) == ids.length){
+            return RespBean.ok("批量删除成功");
+        }
+        return RespBean.error("批量删除失败！");
     }
 }

@@ -3,6 +3,7 @@ package com.zwl.vhrapi.service;
 import com.zwl.vhrapi.mapper.PositionMapper;
 import com.zwl.vhrapi.model.Position;
 import com.zwl.vhrapi.model.RespBean;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,5 +40,10 @@ public class PositionService {
     //删除职位信息
     public int deletePosition(Integer id) {
         return positionMapper.deleteByPrimaryKey(id);
+    }
+
+    //批量删除职位信息
+    public Integer deletePositionByIds(Integer[] ids) {
+        return positionMapper.deletePositionByIds(ids);
     }
 }

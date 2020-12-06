@@ -2,6 +2,7 @@ package com.zwl.vhrapi.mapper;
 
 
 import com.zwl.vhrapi.model.Position;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface PositionMapper {
     int updateByPrimaryKey(Position record);
 
     List<Position> getAllPosition();
+
+    Integer deletePositionByIds(@Param("ids") Integer[] ids);
 }

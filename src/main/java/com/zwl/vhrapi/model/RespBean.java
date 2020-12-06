@@ -2,30 +2,30 @@ package com.zwl.vhrapi.model;
 
 public class RespBean {
     private Integer status;
-    private String msg;
+    private String message;
     private Object obj;
 
-    public static RespBean ok(String msg){
-        return new RespBean(200, msg, null);
+    public static RespBean ok(String message){
+        return new RespBean(200, message, null);
     }
 
-    public static RespBean ok(String msg, Object obj){
-        return new RespBean(200, msg, obj);
+    public static RespBean ok(String message, Object obj){
+        return new RespBean(200, message, obj);
     }
 
-    public static RespBean error(String msg){
-        return new RespBean(500, msg, null);
+    public static RespBean error(String message){
+        return new RespBean(500, message, null);
     }
 
-    public static RespBean error(String msg, Object obj){
-        return new RespBean(500, msg, obj);
+    public static RespBean error(String message, Object obj){
+        return new RespBean(500, message, obj);
     }
 
     private RespBean(){}
 
-    private RespBean(Integer status, String msg, Object obj) {
+    private RespBean(Integer status, String message, Object obj) {
         this.status = status;
-        this.msg = msg;
+        this.message = message;
         this.obj = obj;
     }
 
@@ -38,11 +38,11 @@ public class RespBean {
     }
 
     public String getMsg() {
-        return msg;
+        return message;
     }
 
     public void setMsg(String msg) {
-        this.msg = msg;
+        this.message = msg;
     }
 
     public Object getObj() {

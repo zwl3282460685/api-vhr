@@ -1,4 +1,4 @@
-package com.zwl.vhrapi.controller;
+package com.zwl.vhrapi.controller.config;
 
 import com.zwl.vhrapi.model.Menu;
 import com.zwl.vhrapi.service.MenuService;

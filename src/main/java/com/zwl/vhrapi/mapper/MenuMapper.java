@@ -24,4 +24,7 @@ public interface MenuMapper {
 
     //获取多有的菜单项
     List<Menu> getAllMenus();
+
+    //根据角色id获取相应操作的权限列表的id
+    List<Integer> getMidsByRid(Integer rid);
 }

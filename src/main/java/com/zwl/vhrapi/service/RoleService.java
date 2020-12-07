@@ -24,4 +24,17 @@ public class RoleService {
     public List<Role> getAllRoles() {
         return roleMapper.getAllRoles();
     }
+
+    //在权限组中添加一个角色
+    public int addRole(Role role) {
+        if(!role.getName().startsWith("Role_")){
+            role.setName("ROLE_" + role.getName());
+        }
+        return roleMapper.insert(role);
+    }
+
+    //根据rid删除权限组中的角色
+    public int deleteRoleById(Integer rid) {
+        return roleMapper.deleteByPrimaryKey(rid);
+    }
 }

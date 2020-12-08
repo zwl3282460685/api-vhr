@@ -57,9 +57,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(
                 "/swagger-ui.html",
                 "/v2/api-docs", // swagger api json
-//                "/swagger-resources/configuration/ui", // 用来获取支持的动作
-//                "/swagger-resources", // 用来获取api-docs的URI
-//                "/swagger-resources/configuration/security", // 安全选项
                 "/swagger-resources/**",
                 "/webjars/**",  //补充路径，近期在搭建swagger接口文档时，通过浏览器控制台发现该/webjars路径下的文件被拦截，故加上此过滤条件即可。
                 "/login");

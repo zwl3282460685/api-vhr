@@ -32,7 +32,11 @@
     r.id as rid, r.name as rname, r.nameZh as rnameZh
     from hr LEFT JOIN hr_role hrr on hr.id = hrr.hrid
     LEFT JOIN role r on hrr.rid = r.id
-    where hr.id != #{hrId};
+    where hr.id != #{hrId}
+    <if test="keywords != null">
+        and hr.name like concat('%', #{keywords} '%')
+    </if>
+    order by hr.id
   </select>
   <select id="getHrRolesById" resultType="com.zwl.vhrapi.model.Role">
     select r.*

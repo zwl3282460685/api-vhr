@@ -20,8 +20,8 @@ public class HrService implements UserDetailsService {
 
 
     //获取所有的Hr
-    public  List<Hr> getAllHrs() {
-        return hrMapper.getAllHrs(HrUtils.getCurrentHr().getId());
+    public  List<Hr> getAllHrs(String keywords) {
+        return hrMapper.getAllHrs(HrUtils.getCurrentHr().getId(), keywords);
     }
 
     @Override
@@ -32,5 +32,13 @@ public class HrService implements UserDetailsService {
         }
         hr.setRoles(hrMapper.getHrRolesById(hr.getId()));
         return hr;
+    }
+
+    public int updateHr(Hr hr) {
+        return hrMapper.updateByPrimaryKeySelective(hr);
+    }
+
+    public int deleteHrById(Integer id) {
+        return hrMapper.deleteByPrimaryKey(id);
     }
 }

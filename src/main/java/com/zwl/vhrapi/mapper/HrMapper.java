@@ -3,6 +3,7 @@ package com.zwl.vhrapi.mapper;
 
 import com.zwl.vhrapi.model.Hr;
 import com.zwl.vhrapi.model.Role;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -23,5 +24,5 @@ public interface HrMapper {
 
     List<Role> getHrRolesById(Integer id);
 
-    List<Hr> getAllHrs(Integer hrId);
+    List<Hr> getAllHrs(@Param("hrId") Integer hrId, @Param("keywords")String keywords);
 }

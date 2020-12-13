@@ -2,9 +2,13 @@ package com.zwl.vhrapi.controller.system;
 
 import com.zwl.vhrapi.model.Hr;
 import com.zwl.vhrapi.model.RespBean;
+import com.zwl.vhrapi.model.RespPageBean;
+import com.zwl.vhrapi.model.Role;
 import com.zwl.vhrapi.service.HrService;
+import com.zwl.vhrapi.service.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -21,6 +25,9 @@ public class HrController {
 
     @Resource
     HrService hrService;
+
+    @Resource
+    RoleService roleService;
 
     @GetMapping("/")
     @ApiOperation("获取所有的hr")
@@ -44,5 +51,20 @@ public class HrController {
             return RespBean.ok("删除成功");
         }
         return RespBean.error("删除失败");
+    }
+
+    @GetMapping("/roles")
+    @ApiOperation("获取所有的角色信息")
+    public List<Role> getAllRoles(){
+        return roleService.getAllRoles();
+    }
+
+    @PutMapping("/upRoles")
+    @ApiOperation("更新hr的角色")
+    public RespBean updateHrRole(Integer hrId, Integer[] rids){
+        if(hrService.updateHrRole(hrId, rids)){
+            return RespBean.ok("HR角色更新成功");
+        }
+        return RespBean.error("HR角色更新失败");
     }
 }

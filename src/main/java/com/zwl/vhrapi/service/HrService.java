@@ -1,6 +1,7 @@
 package com.zwl.vhrapi.service;
 
 import com.zwl.vhrapi.mapper.HrMapper;
+import com.zwl.vhrapi.mapper.HrRoleMapper;
 import com.zwl.vhrapi.model.Hr;
 import com.zwl.vhrapi.utils.HrUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -18,6 +20,8 @@ public class HrService implements UserDetailsService {
     @Resource
     HrMapper hrMapper;
 
+    @Resource
+    HrRoleMapper hrRoleMapper;
 
     //获取所有的Hr
     public  List<Hr> getAllHrs(String keywords) {
@@ -40,5 +44,11 @@ public class HrService implements UserDetailsService {
 
     public int deleteHrById(Integer id) {
         return hrMapper.deleteByPrimaryKey(id);
+    }
+
+    @Transactional
+    public boolean updateHrRole(Integer hrId, Integer[] rids) {
+        hrRoleMapper.deleteByHrId(hrId);
+        return hrRoleMapper.addRole(hrId, rids) == rids.length;
     }
 }

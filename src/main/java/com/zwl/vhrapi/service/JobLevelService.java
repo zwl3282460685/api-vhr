@@ -2,6 +2,7 @@ package com.zwl.vhrapi.service;
 
 import com.zwl.vhrapi.mapper.JobLevelMapper;
 import com.zwl.vhrapi.model.JobLevel;
+import com.zwl.vhrapi.model.Politicsstatus;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -46,4 +47,5 @@ public class JobLevelService {
     public int deletePositionByIds(Integer[] ids) {
         return jobLevelMapper.deleteByIds(ids);
     }
+
 }

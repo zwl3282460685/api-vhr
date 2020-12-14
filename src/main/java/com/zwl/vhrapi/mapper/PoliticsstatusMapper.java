@@ -3,6 +3,8 @@ package com.zwl.vhrapi.mapper;
 
 import com.zwl.vhrapi.model.Politicsstatus;
 
+import java.util.List;
+
 public interface PoliticsstatusMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -15,4 +17,7 @@ public interface PoliticsstatusMapper {
     int updateByPrimaryKeySelective(Politicsstatus record);
 
     int updateByPrimaryKey(Politicsstatus record);
+
+    //获取所有的政治面貌
+    List<Politicsstatus> getAllPoliticsstatus();
 }

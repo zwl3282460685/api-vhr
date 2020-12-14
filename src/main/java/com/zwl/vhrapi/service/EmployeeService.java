@@ -1,7 +1,9 @@
 package com.zwl.vhrapi.service;
 
 import com.zwl.vhrapi.mapper.EmployeeMapper;
+import com.zwl.vhrapi.mapper.NationMapper;
 import com.zwl.vhrapi.model.Employee;
+import com.zwl.vhrapi.model.Nation;
 import com.zwl.vhrapi.model.RespPageBean;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,9 @@ public class EmployeeService {
 
     @Resource
     EmployeeMapper employeeMapper;
+
+    @Resource
+    NationMapper nationMapper;
 
     //获取分页查询数据
     public RespPageBean getEmployeeByPage(Integer page, Integer size, String keyword) {
@@ -34,5 +39,10 @@ public class EmployeeService {
     //添加员工
     public int addEmp(Employee employee) {
         return employeeMapper.insertSelective(employee);
+    }
+
+    //自动生成工号
+    public Integer maxWorkId() {
+        return employeeMapper.maxWorkId();
     }
 }

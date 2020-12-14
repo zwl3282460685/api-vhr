@@ -23,4 +23,6 @@ public interface EmployeeMapper {
 
     //获取总个数
     Long getTotal(String keyword);
+
+    Integer maxWorkId();
 }

@@ -14,7 +14,7 @@ import java.util.List;
  * @data 2020/12/13 11:44
  **/
 @RestController
-@RequestMapping("/emp/basic")
+@RequestMapping("/employee/basic")
 @Api(tags = "员工基本资料接口")
 public class EmpBasicController {
 
@@ -89,5 +89,25 @@ public class EmpBasicController {
     @ApiOperation("获取所有的部门信息")
     public List<Department> getAllDepartments(){
         return departmentService.getAllDepartment();
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation("根据id删除员工信息")
+    public RespBean deleteEmpById(@PathVariable Integer id){
+        if(employeeService.deleteEmpById(id) == 1){
+            return RespBean.ok("员工删除成功");
+        }else{
+            return RespBean.error("员工删除失败!");
+        }
+    }
+
+    @PutMapping("/")
+    @ApiOperation("更新员工信息")
+    public RespBean updateEmp(@RequestBody Employee employee){
+        if(employeeService.updateEmp(employee) == 1){
+            return RespBean.ok("员工信息更新成功！");
+        }else{
+            return RespBean.error("员工信息更新失败！");
+        }
     }
 }

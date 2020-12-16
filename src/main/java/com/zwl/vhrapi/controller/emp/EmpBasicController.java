@@ -2,8 +2,10 @@ package com.zwl.vhrapi.controller.emp;
 
 import com.zwl.vhrapi.model.*;
 import com.zwl.vhrapi.service.*;
+import com.zwl.vhrapi.utils.PoiUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -109,5 +111,12 @@ public class EmpBasicController {
         }else{
             return RespBean.error("员工信息更新失败！");
         }
+    }
+
+    @GetMapping("/export")
+    @ApiOperation("导出数据")
+    public ResponseEntity<byte[] > exportData(){
+        List<Employee> employees = (List<Employee>) employeeService.getEmployeeByPage(null,null,null).getData();
+        return PoiUtils.employee2Excel(employees);
     }
 }

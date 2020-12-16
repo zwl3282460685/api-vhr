@@ -8,6 +8,10 @@ import com.zwl.vhrapi.model.RespPageBean;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.xml.crypto.Data;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,6 +26,10 @@ public class EmployeeService {
 
     @Resource
     NationMapper nationMapper;
+
+    SimpleDateFormat yearDateFormat = new SimpleDateFormat("yyyy");
+    SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
+    DecimalFormat decimalFormat = new DecimalFormat("##.00");
 
     //获取分页查询数据
     public RespPageBean getEmployeeByPage(Integer page, Integer size, String keyword) {
@@ -38,6 +46,11 @@ public class EmployeeService {
 
     //添加员工
     public int addEmp(Employee employee) {
+        Date beginContract = employee.getBeginContract();
+        Date endContract = employee.getEndContract();
+        Double month = (Double.parseDouble(yearDateFormat.format(endContract)) - Double.parseDouble(yearDateFormat.format(beginContract))) * 12 +
+                (Double.parseDouble(monthFormat.format(endContract)) - Double.parseDouble(monthFormat.format(beginContract)));
+        employee.setContractTerm(Double.parseDouble(decimalFormat.format(month / 12)));
         return employeeMapper.insertSelective(employee);
     }
 

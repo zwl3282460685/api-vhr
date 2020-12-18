@@ -2,6 +2,7 @@ package com.zwl.vhrapi.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Department {
     private Integer id;
@@ -17,6 +18,13 @@ public class Department {
     private Boolean isParent;
     private List<Department> children = new ArrayList<>();
     private Integer result;
+
+    public Department(String name) {
+        this.name = name;
+    }
+
+    public Department() {
+    }
 
     public Integer getResult() {
         return result;
@@ -80,5 +88,18 @@ public class Department {
 
     public void setParent(Boolean parent) {
         isParent = parent;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Department that = (Department) o;
+        return name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

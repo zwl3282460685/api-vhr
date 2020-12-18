@@ -1,9 +1,18 @@
 package com.zwl.vhrapi.model;
 
+import java.util.Objects;
+
 public class Politicsstatus {
     private Integer id;
 
     private String name;
+
+    public Politicsstatus(String name) {
+        this.name = name;
+    }
+
+    public Politicsstatus() {
+    }
 
     public Integer getId() {
         return id;
@@ -19,5 +28,18 @@ public class Politicsstatus {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Politicsstatus that = (Politicsstatus) o;
+        return name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

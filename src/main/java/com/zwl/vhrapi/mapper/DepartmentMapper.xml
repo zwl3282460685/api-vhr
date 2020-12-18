@@ -18,6 +18,12 @@
                 select="com.zwl.vhrapi.mapper.DepartmentMapper.getAllDepartmentByParentId" column="id"/>
   </resultMap>
 
+  <select id="getAllDepartmentWithOutChildren" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from department;
+  </select>
+
   <select id="deleteDepById" statementType="CALLABLE">
     call deleteDep(#{id, mode=IN, jdbcType=INTEGER},#{result,mode=OUT,jdbcType=INTEGER})
   </select>

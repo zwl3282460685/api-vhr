@@ -7,8 +7,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -118,5 +121,19 @@ public class EmpBasicController {
     public ResponseEntity<byte[] > exportData(){
         List<Employee> employees = (List<Employee>) employeeService.getEmployeeByPage(null,null,null).getData();
         return PoiUtils.employee2Excel(employees);
+    }
+
+    @PostMapping("/import")
+    @ApiOperation("导入数据")
+    public RespBean importData(MultipartFile file) throws IOException {
+        List<Employee> list = PoiUtils.excel2Employee(file, nationService.getAllNation(),
+                politicsstatusService.getAllPoliticsstatus(),
+                departmentService.getAllDepartmentWithOutChildren(),
+                positionService.getAllPositions(),
+                jobLevelService.getAllJobLevels());
+        if(employeeService.addEmps(list) == list.size()){
+            return RespBean.ok("上传成功");
+        }
+        return RespBean.error("上传失败");
     }
 }

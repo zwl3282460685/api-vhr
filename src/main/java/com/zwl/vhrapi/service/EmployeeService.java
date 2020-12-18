@@ -66,4 +66,8 @@ public class EmployeeService {
     public Integer updateEmp(Employee employee) {
         return employeeMapper.updateByPrimaryKeySelective(employee);
     }
+
+    public Integer addEmps(List<Employee> list) {
+        return employeeMapper.addEmps(list);
+    }
 }

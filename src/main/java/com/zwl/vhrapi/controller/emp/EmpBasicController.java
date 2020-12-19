@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,11 +45,13 @@ public class EmpBasicController {
     DepartmentService departmentService;
 
     @GetMapping("/")
-    @ApiOperation("获取员工信息的分页查询数据及按关键字搜索")
+    @ApiOperation("获取员工信息的分页查询数据及搜索相关功能")
     public RespPageBean getEmployeeByPage(@RequestParam(defaultValue = "1") Integer page,
                                           @RequestParam(defaultValue = "10") Integer size,
-                                          String keyword){
-        return employeeService.getEmployeeByPage(page, size, keyword);
+                                          Employee emp, Date[] beginDataScope){
+
+
+        return employeeService.getEmployeeByPage(page, size, emp, beginDataScope);
     }
 
     @PostMapping("/")
@@ -119,7 +124,7 @@ public class EmpBasicController {
     @GetMapping("/export")
     @ApiOperation("导出数据")
     public ResponseEntity<byte[] > exportData(){
-        List<Employee> employees = (List<Employee>) employeeService.getEmployeeByPage(null,null,null).getData();
+        List<Employee> employees = (List<Employee>) employeeService.getEmployeeByPage(null,null,null, null).getData();
         return PoiUtils.employee2Excel(employees);
     }
 

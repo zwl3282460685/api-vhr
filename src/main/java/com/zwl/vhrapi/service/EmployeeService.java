@@ -32,12 +32,12 @@ public class EmployeeService {
     DecimalFormat decimalFormat = new DecimalFormat("##.00");
 
     //获取分页查询数据
-    public RespPageBean getEmployeeByPage(Integer page, Integer size, String keyword) {
+    public RespPageBean getEmployeeByPage(Integer page, Integer size, Employee emp, Date[] beginDataScope) {
         if(null != page && null != size){
             page = (page -1) * size;
         }
-        List<Employee> data = employeeMapper.getEmployeeByPage(page, size, keyword);
-        Long total = employeeMapper.getTotal(keyword);
+        List<Employee> data = employeeMapper.getEmployeeByPage(page, size, emp, beginDataScope);
+        Long total = employeeMapper.getTotal(emp, beginDataScope);
         RespPageBean bean = new RespPageBean();
         bean.setData(data);
         bean.setTotal(total);

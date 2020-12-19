@@ -17,7 +17,7 @@ import java.util.List;
  **/
 @RestController
 @RequestMapping("/system/basic/department")
-@Api("部门管理接口")
+@Api(tags = "部门管理接口")
 public class DepartmentController {
 
     @Resource

@@ -4,6 +4,7 @@ package com.zwl.vhrapi.mapper;
 import com.zwl.vhrapi.model.Employee;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface EmployeeMapper {
@@ -19,10 +20,12 @@ public interface EmployeeMapper {
 
     int updateByPrimaryKey(Employee record);
 
-    List<Employee> getEmployeeByPage(@Param("page") Integer page, @Param("size") Integer size, @Param("keyword") String keyword);
+    List<Employee> getEmployeeByPage(@Param("page") Integer page, @Param("size") Integer size,
+                                     @Param("emp") Employee employee,
+                                     @Param("beginDataScope") Date[] beginDataScope);
 
     //获取总个数
-    Long getTotal(String keyword);
+    Long getTotal(@Param("emp") Employee emp, @Param("beginDataScope") Date[] beginDataScope);
 
     Integer maxWorkId();
 

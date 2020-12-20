@@ -5,6 +5,9 @@ import com.zwl.vhrapi.mapper.NationMapper;
 import com.zwl.vhrapi.model.Employee;
 import com.zwl.vhrapi.model.Nation;
 import com.zwl.vhrapi.model.RespPageBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,9 +24,13 @@ import java.util.List;
 @Service
 public class EmployeeService {
 
+    public final static Logger logger = LoggerFactory.getLogger(EmployeeService.class);
+
     @Resource
     EmployeeMapper employeeMapper;
 
+    @Resource
+    RabbitTemplate rabbitTemplate;
     @Resource
     NationMapper nationMapper;
 
@@ -51,7 +58,13 @@ public class EmployeeService {
         Double month = (Double.parseDouble(yearDateFormat.format(endContract)) - Double.parseDouble(yearDateFormat.format(beginContract))) * 12 +
                 (Double.parseDouble(monthFormat.format(endContract)) - Double.parseDouble(monthFormat.format(beginContract)));
         employee.setContractTerm(Double.parseDouble(decimalFormat.format(month / 12)));
-        return employeeMapper.insertSelective(employee);
+        int result = employeeMapper.insertSelective(employee);
+        if(result == 1){
+            Employee emp = employeeMapper.getEmployeeById(employee.getId());
+            logger.info(emp.toString());
+            rabbitTemplate.convertAndSend("zwl.mail.welcome",emp);
+        }
+        return result;
     }
 
     //自动生成工号

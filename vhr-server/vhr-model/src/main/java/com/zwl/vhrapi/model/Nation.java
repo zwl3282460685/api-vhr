@@ -1,8 +1,9 @@
 package com.zwl.vhrapi.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Nation {
+public class Nation implements Serializable {
 
     private Integer id;
 

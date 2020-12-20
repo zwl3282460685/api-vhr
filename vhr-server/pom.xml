@@ -15,5 +15,6 @@
         <module>vhr-mapper</module>
         <module>vhr-model</module>
         <module>vhr-service</module>
+        <module>vhr-web</module>
     </modules>
 </project>

@@ -84,7 +84,7 @@
       <if test="medicalPer != null" >
         medicalPer,
       </if>
-      <if test="accumulationFundBase != null" >
+      <if test="accumulationFundBase!= null" >
         accumulationFundBase,
       </if>
       <if test="accumulationFundPer != null" >

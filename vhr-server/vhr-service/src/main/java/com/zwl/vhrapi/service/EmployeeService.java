@@ -95,4 +95,8 @@ public class EmployeeService {
         return respPageBean;
 
     }
+
+    public Integer updateEmployeeSalaryById(Integer eid, Integer sid) {
+        return employeeMapper.updateEmployeeSalaryById(eid, sid);
+    }
 }

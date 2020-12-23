@@ -1,6 +1,7 @@
 package com.zwl.vhrapi.controller.salary;
 
 import com.zwl.vhrapi.model.Employee;
+import com.zwl.vhrapi.model.RespBean;
 import com.zwl.vhrapi.model.RespPageBean;
 import com.zwl.vhrapi.model.Salary;
 import com.zwl.vhrapi.service.EmployeeService;
@@ -8,10 +9,7 @@ import com.zwl.vhrapi.service.SalaryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,7 +19,7 @@ import java.util.List;
  **/
 @RestController
 @RequestMapping("/salary/sobcfg")
-@Api(tags = "员工薪资账套管理")
+@Api(tags = "员工薪资账套管理接口")
 public class SobConfigController {
 
     @Autowired
@@ -40,5 +38,14 @@ public class SobConfigController {
     @ApiOperation("获取所有的账套信息")
     public List<Salary> getAllSalaries(){
         return salaryService.getAllSalaries();
+    }
+
+    @PutMapping("/")
+    @ApiOperation("修改员工账套信息")
+    public RespBean updateEmployeeSalaryById(Integer eid, Integer sid){
+        if(employeeService.updateEmployeeSalaryById(eid, sid) > 0){
+            return RespBean.ok("员工账套信息修改成功");
+        }
+        return RespBean.error("员工账套信息修改失败！");
     }
 }

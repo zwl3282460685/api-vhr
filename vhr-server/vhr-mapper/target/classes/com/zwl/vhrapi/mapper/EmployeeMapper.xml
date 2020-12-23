@@ -83,6 +83,10 @@
     beginContract, endContract, workAge
   </sql>
 
+  <insert id="updateEmployeeSalaryById">
+    REPLACE INTO empsalary (eid, sid) VALUES(#{eid}, #{sid})
+  </insert>
+
   <select id="getEmployeeByPageWithSalary" resultMap="EmployeeWithSalary">
     select e.*,d.`name` as dname, s.id AS sid, s.accumulationFundBase as saccumulationFundBase,
     s.accumulationFundPer as saccumulationFundPer, s.allSalary AS sallSalary,
@@ -93,6 +97,7 @@
     from employee e LEFT JOIN empsalary es ON e.id = es.eid
     LEFT JOIN salary s
     ON es.sid = s.id LEFT JOIN department d on e.departmentId = d.id
+    order by e.id
   <if test="page != null and size != null">
     limit #{page},#{size}
   </if>

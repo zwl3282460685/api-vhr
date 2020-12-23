@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.lang.invoke.SerializedLambda;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author zwl
@@ -29,5 +30,9 @@ public class SalaryService {
 
     public Integer updateSalaryById(Salary salary) {
         return salaryMapper.updateByPrimaryKeySelective(salary);
+    }
+
+    public List<Salary> getAllSalaries() {
+        return salaryMapper.getAllSalary();
     }
 }

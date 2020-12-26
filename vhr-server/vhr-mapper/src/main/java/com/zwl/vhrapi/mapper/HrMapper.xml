@@ -26,6 +26,11 @@
     id, name, phone, telephone, address, enabled, username, password, userface, remark
   </sql>
 
+  <select id="getAllHrsExceptCurrentHr" resultMap="BaseResultMap">
+    select * from Hr
+    where id != #{id};
+  </select>
+
   <select id="getAllHrs" resultMap="HrWithRoles">
     select
     hr.id, hr.name, hr.phone, hr.telephone, hr.address, hr.enabled, hr.username, hr.userface, hr.remark,

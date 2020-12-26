@@ -23,6 +23,10 @@ public class HrService implements UserDetailsService {
     @Resource
     HrRoleMapper hrRoleMapper;
 
+    public List<Hr> getAllHrsExceptCurrentHr() {
+        return hrMapper.getAllHrsExceptCurrentHr(HrUtils.getCurrentHr().getId());
+    }
+
     //获取所有的Hr
     public  List<Hr> getAllHrs(String keywords) {
         return hrMapper.getAllHrs(HrUtils.getCurrentHr().getId(), keywords);

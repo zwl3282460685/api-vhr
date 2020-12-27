@@ -1,19 +1,18 @@
 package com.zwl.vhrapi.controller.system;
 
+import com.zwl.vhrapi.config.FastDFSUtils;
 import com.zwl.vhrapi.model.Hr;
 import com.zwl.vhrapi.model.RespBean;
 import com.zwl.vhrapi.service.HrService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -27,6 +26,8 @@ public class HrInfoController {
 
     @Autowired
     HrService hrService;
+    @Value("${fastdfs.nginx.host}")
+    String nginxHost;
 
     @GetMapping("/hr/info")
     @ApiOperation("获取当前登录的Hr的信息")
@@ -56,5 +57,19 @@ public class HrInfoController {
             return RespBean.ok("密码修改成功");
         }
         return RespBean.error("密码修改失败");
+    }
+
+    @PostMapping("/hr/userface")
+    public RespBean updateHrUserFace(MultipartFile file, Integer id, Authentication authentication){
+        String fileId = FastDFSUtils.upload(file);
+        String url = nginxHost + fileId;
+        if(hrService.updateHrUserFace(url, id) == 1){
+            Hr hr = (Hr) authentication.getPrincipal();
+            hr.setUserface(url);
+            SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(hr,
+                    authentication.getCredentials(), authentication.getAuthorities()));
+            return RespBean.ok("头像更新成功!");
+        }
+        return RespBean.error("头像更新失败!");
     }
 }

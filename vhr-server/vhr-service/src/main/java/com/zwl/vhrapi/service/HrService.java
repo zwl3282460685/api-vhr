@@ -69,4 +69,8 @@ public class HrService implements UserDetailsService {
         }
         return false;
     }
+
+    public int updateHrUserFace(String url, Integer id) {
+        return hrMapper.updateHrUserFace(url, id);
+    }
 }

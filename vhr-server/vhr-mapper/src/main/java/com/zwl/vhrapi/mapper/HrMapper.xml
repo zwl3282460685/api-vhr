@@ -26,6 +26,10 @@
     id, name, phone, telephone, address, enabled, username, password, userface, remark
   </sql>
 
+  <update id="updateHrUserFace">
+    update hr set userface = #{url} where id = #{id}
+  </update>
+
   <update id="updateHrPasswd">
     update hr set password = #{encodePass} where id = #{hrid}
   </update>

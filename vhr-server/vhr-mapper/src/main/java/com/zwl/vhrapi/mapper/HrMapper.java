@@ -27,4 +27,6 @@ public interface HrMapper {
     List<Hr> getAllHrs(@Param("hrId") Integer hrId, @Param("keywords")String keywords);
 
     List<Hr> getAllHrsExceptCurrentHr(Integer id);
+
+    Integer updateHrPasswd(@Param("hrid") Integer hrid, @Param("encodePass") String encodePass);
 }

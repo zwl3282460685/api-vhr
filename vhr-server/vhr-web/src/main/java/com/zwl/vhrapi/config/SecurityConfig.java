@@ -15,12 +15,14 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import javax.annotation.Resource;
@@ -35,18 +37,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
     HrService hrService;
-
     @Resource
     CustomerFilterInvocationSecurityMetadataSource myFilter;
-
     @Resource
     CustomerUrlDecisionManager myDecisionManager;
-
+    @Resource
+    VerificationCodeFilter verificationCodeFilter;
     @Bean
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(hrService);
@@ -59,11 +59,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/v2/api-docs", // swagger api json
                 "/swagger-resources/**",
                 "/webjars/**",  //补充路径，近期在搭建swagger接口文档时，通过浏览器控制台发现该/webjars路径下的文件被拦截，故加上此过滤条件即可。
-                "/login");
+                "/login",
+                "/css/**",
+                "/js/**", "/index.html", "/img/**",
+                "/fonts/**", "/favicon.ico",
+                "/verifyCode");
+    }
+
+    @Bean
+    SessionRegistryImpl sessionRegistry() {
+        return new SessionRegistryImpl();
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.addFilterBefore(verificationCodeFilter, UsernamePasswordAuthenticationFilter.class);
         http.authorizeRequests()
 //                .anyRequest().authenticated()
             .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {

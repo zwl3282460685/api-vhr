@@ -1,24 +1,26 @@
 package com.zwl.vhrapi.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zwl.vhrapi.filter.JwtFilter;
+import com.zwl.vhrapi.filter.JwtLoginFilter;
 import com.zwl.vhrapi.model.Hr;
 import com.zwl.vhrapi.model.RespBean;
 import com.zwl.vhrapi.service.HrService;
-import io.swagger.models.auth.In;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.*;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -33,6 +35,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled=true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
@@ -73,6 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http.addFilterBefore(verificationCodeFilter, UsernamePasswordAuthenticationFilter.class);
         http.authorizeRequests()
 //                .anyRequest().authenticated()
@@ -88,9 +93,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .formLogin()
             .usernameParameter("username")
             .passwordParameter("password")
-            .loginProcessingUrl("/doLogin")
+            .loginProcessingUrl("/doLogin") //设置的登录的访问接口
             .loginPage("/login")
-            .successHandler(new AuthenticationSuccessHandler() {
+            .successHandler(new AuthenticationSuccessHandler() {//登录成功的操作
                 @Override
                 public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                                     Authentication authentication) throws IOException, ServletException {
@@ -104,7 +109,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     out.close();
                 }
             })
-            .failureHandler(new AuthenticationFailureHandler() {
+            .failureHandler(new AuthenticationFailureHandler() {//登录失败的操作
                 @Override
                 public void onAuthenticationFailure(HttpServletRequest req, HttpServletResponse rep, AuthenticationException e) throws IOException, ServletException {
                     rep.setContentType("application/json;charset=utf-8");
@@ -129,19 +134,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .permitAll()
             .and()
             .logout()
-            .logoutSuccessHandler(new LogoutSuccessHandler() {
+            .logoutSuccessHandler(new LogoutSuccessHandler() {//注销成功的操作
                 @Override
                 public void onLogoutSuccess(HttpServletRequest req, HttpServletResponse rep, Authentication authentication) throws IOException, ServletException {
                     rep.setContentType("application/json;charset=utf-8");
                     PrintWriter out = rep.getWriter();
-                    out.write(new ObjectMapper().writeValueAsString(RespBean.ok("注销成功！")));
+                    out.write(new ObjectMapper().writeValueAsString(RespBean.ok("注销成功!")));
                     out.flush();
                     out.close();
                 }
             })
             .permitAll()
             .and()
-            .csrf().disable().exceptionHandling()
+            .csrf().disable()
+             //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .exceptionHandling()
             //没有认证时，在这里处理结果，不要重定向
             .authenticationEntryPoint((request, rep, e) -> {
                 rep.setContentType("application/json;charset=utf-8");
@@ -155,5 +162,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 out.flush();
                 out.close();
             });
+//        http.addFilterBefore(new JwtLoginFilter("/doLogin", authenticationManager()), UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(new JwtFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

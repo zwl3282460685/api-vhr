@@ -4,7 +4,6 @@ import com.zwl.vhrapi.mapper.HrMapper;
 import com.zwl.vhrapi.mapper.HrRoleMapper;
 import com.zwl.vhrapi.model.Hr;
 import com.zwl.vhrapi.utils.HrUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,6 +32,7 @@ public class HrService implements UserDetailsService {
         return hrMapper.getAllHrs(HrUtils.getCurrentHr().getId(), keywords);
     }
 
+    //springSecurity从数据库读取用户信息
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Hr hr = hrMapper.loadUserByUsername(username);

@@ -1,6 +1,8 @@
 package com.zwl.vhrapi.model;
 
-public class Meta {
+import java.io.Serializable;
+
+public class Meta implements Serializable {
 
     private Boolean keepalive;
     private Boolean requireauth;

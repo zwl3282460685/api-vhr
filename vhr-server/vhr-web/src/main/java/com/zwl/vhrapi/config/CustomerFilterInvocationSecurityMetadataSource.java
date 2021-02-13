@@ -28,8 +28,7 @@ public class CustomerFilterInvocationSecurityMetadataSource implements FilterInv
     //比对工具类
     AntPathMatcher antPathMatcher = new AntPathMatcher();
 
-
-    //根据用户输入的rul，分析出所需要的角色并返回。
+    //根据用户输入的url，分析出所需要的角色并返回。
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
         String requestUrl = ((FilterInvocation) object).getRequestUrl(); //获取请求地址

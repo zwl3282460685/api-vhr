@@ -13,7 +13,7 @@ import javax.security.auth.login.Configuration;
 import java.util.Collection;
 
 /**
- * 判断当前用户是否具备相应的角色
+ * 判断当前用户是否具备访问接口所需的角色
  * @author zwl
  * @data 2020/12/5 16:23
  **/
@@ -33,7 +33,7 @@ public class CustomerUrlDecisionManager implements AccessDecisionManager {
                        Collection<ConfigAttribute> configAttributes)
             throws AccessDeniedException, InsufficientAuthenticationException {
         for(ConfigAttribute configAttribute : configAttributes){
-            String needRole = configAttribute.getAttribute();//用户访问url所需的角色
+            String needRole = configAttribute.getAttribute();    //用户访问url所需的角色
             if("ROLE_LOGIN".equals(needRole)){
                 if(authentication instanceof AnonymousAuthenticationToken){ //未登录情况
                     throw new AccessDeniedException("尚未登录");
@@ -41,6 +41,7 @@ public class CustomerUrlDecisionManager implements AccessDecisionManager {
                     return;
                 }
             }
+
             //获取当前登录用户的角色
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
             for (GrantedAuthority authority : authorities) {

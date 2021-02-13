@@ -4,6 +4,7 @@ import com.zwl.vhrapi.mapper.MenuMapper;
 import com.zwl.vhrapi.mapper.MenuRoleMapper;
 import com.zwl.vhrapi.model.Hr;
 import com.zwl.vhrapi.model.Menu;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
+@CacheConfig(cacheNames = "menus_cache")
 public class MenuService {
 
     @Resource
@@ -26,6 +28,7 @@ public class MenuService {
                 getPrincipal()).getId());
     }
 
+    //根据url获取访问菜单所需要的角色
     //@Cacheable
     public List<Menu> getAllMenusWithRole() {
         return menuMapper.getAllMenusWithRole();

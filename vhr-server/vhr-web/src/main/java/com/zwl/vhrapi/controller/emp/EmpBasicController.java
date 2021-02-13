@@ -111,6 +111,14 @@ public class EmpBasicController {
         }
     }
 
+    @DeleteMapping("/")
+    @ApiOperation("根据id批量删除员工信息")
+    public RespBean deleteEmpByIds(Integer[] ids){
+        if(employeeService.deletePositionByIds(ids) == ids.length){
+            return RespBean.ok("批量删除员工信息成功");
+        }
+        return RespBean.error("批量删除员工信息失败！");
+    }
     @PutMapping("/")
     @ApiOperation("更新员工信息")
     public RespBean updateEmp(@RequestBody Employee employee){

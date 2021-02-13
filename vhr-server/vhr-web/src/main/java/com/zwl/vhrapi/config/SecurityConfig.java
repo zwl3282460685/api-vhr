@@ -81,7 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(verificationCodeFilter, UsernamePasswordAuthenticationFilter.class);
         http.authorizeRequests()
 //                .anyRequest().authenticated()
-            .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+            .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() { //用于判断用户是否具有访问权限
                 @Override
                 public <O extends FilterSecurityInterceptor> O postProcess(O o) {
                     o.setAccessDecisionManager(myDecisionManager);
@@ -149,7 +149,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .csrf().disable()
              //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .exceptionHandling()
-            //没有认证时，在这里处理结果，不要重定向
+            //请求失败时，在这里处理结果，不要重定向
             .authenticationEntryPoint((request, rep, e) -> {
                 rep.setContentType("application/json;charset=utf-8");
                 rep.setStatus(401);

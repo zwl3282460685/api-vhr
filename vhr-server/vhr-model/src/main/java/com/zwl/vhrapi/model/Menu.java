@@ -1,9 +1,10 @@
 package com.zwl.vhrapi.model;
 
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Menu {
+public class Menu implements Serializable {
     private Integer id;
 
     private String url;
@@ -18,7 +19,7 @@ public class Menu {
 
     private Meta meta;
     private List<Menu> children;
-    private List<Role> roles;
+    private List<Role> roles; //角色所拥有的角色
 
     public List<Role> getRoles() {
         return roles;

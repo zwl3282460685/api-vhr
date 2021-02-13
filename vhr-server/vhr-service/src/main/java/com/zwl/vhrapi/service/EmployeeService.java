@@ -99,4 +99,13 @@ public class EmployeeService {
     public Integer updateEmployeeSalaryById(Integer eid, Integer sid) {
         return employeeMapper.updateEmployeeSalaryById(eid, sid);
     }
+
+    /**
+     * 批量删除员工信息
+     * @param ids
+     * @return
+     */
+    public int deletePositionByIds(Integer[] ids) {
+        return employeeMapper.deleteEmpByIds(ids);
+    }
 }

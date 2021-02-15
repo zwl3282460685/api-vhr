@@ -3,6 +3,7 @@ package com.zwl.vhrapi.controller.system.basic;
 import com.zwl.vhrapi.model.JobLevel;
 import com.zwl.vhrapi.model.Position;
 import com.zwl.vhrapi.model.RespBean;
+import com.zwl.vhrapi.model.RespPageBean;
 import com.zwl.vhrapi.service.JobLevelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,12 +24,6 @@ public class JobLevelController {
 
     @Resource
     JobLevelService jobLevelService;
-
-    @GetMapping("/")
-    @ApiOperation("获取所有的职称信息")
-    public List<JobLevel> getAllJobLevels(){
-        return jobLevelService.getAllJobLevels();
-    }
 
     @PostMapping("/")
     @ApiOperation("添加职位信息")
@@ -64,5 +59,13 @@ public class JobLevelController {
             return RespBean.ok("批量删除成功");
         }
         return RespBean.error("批量删除失败！");
+    }
+
+    @GetMapping("/")
+    @ApiOperation("获取职位信息的分页查询数据")
+    public RespPageBean getJobLevelByPage(@RequestParam(defaultValue = "1") Integer page,
+                                          @RequestParam(defaultValue = "10") Integer size){
+        return jobLevelService.getJobLevelByPage(page, size);
+
     }
 }

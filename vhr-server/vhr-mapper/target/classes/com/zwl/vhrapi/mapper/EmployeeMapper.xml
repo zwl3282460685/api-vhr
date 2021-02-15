@@ -225,6 +225,13 @@
     delete from employee
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
+  <delete id="deleteEmpByIds">
+    delete from employee where id in
+    <foreach collection="ids" item="id" separator=","  open="(" close=")">
+      #{id}
+    </foreach>
+  </delete>
   <insert id="insert" parameterType="com.zwl.vhrapi.model.Employee" >
     insert into employee (id, name, gender, 
       birthday, idCard, wedlock, nationId, 

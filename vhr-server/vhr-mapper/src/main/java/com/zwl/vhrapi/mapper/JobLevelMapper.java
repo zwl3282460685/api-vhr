@@ -24,4 +24,10 @@ public interface JobLevelMapper {
 
     //批量删除职称信息
     int deleteByIds(@Param("ids") Integer[] ids);
+
+    //获取分页数据
+    List<JobLevel> getJobLevelByPage(Integer page, Integer size);
+
+    //获取该表记录的总行数
+    Long getTotal();
 }

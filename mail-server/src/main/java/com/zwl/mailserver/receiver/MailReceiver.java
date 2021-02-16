@@ -22,7 +22,6 @@ import java.util.Date;
  **/
 @Component
 public class MailReceiver {
-
     public static final Logger logger = LoggerFactory.getLogger(MailReceiver.class);
 
     @Resource

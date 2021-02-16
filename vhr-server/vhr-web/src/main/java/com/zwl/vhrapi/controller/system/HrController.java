@@ -30,7 +30,7 @@ public class HrController {
     RoleService roleService;
 
     @GetMapping("/")
-    @ApiOperation("获取所有的hr")
+    @ApiOperation("根据关键字获取所有的hr")
     public List<Hr> getAllHrs(String keywords){
         return hrService.getAllHrs(keywords);
     }

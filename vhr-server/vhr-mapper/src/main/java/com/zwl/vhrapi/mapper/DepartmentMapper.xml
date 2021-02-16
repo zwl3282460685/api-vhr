@@ -14,7 +14,7 @@
   </sql>
 
   <resultMap id="DepartmentWithChildren" type="com.zwl.vhrapi.model.Department" extends="BaseResultMap">
-    <collection property="children" ofType="om.zwl.vhrapi.model.Department"
+    <collection property="children" ofType="com.zwl.vhrapi.model.Department"
                 select="com.zwl.vhrapi.mapper.DepartmentMapper.getAllDepartmentByParentId" column="id"/>
   </resultMap>
 

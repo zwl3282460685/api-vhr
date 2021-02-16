@@ -12,6 +12,19 @@
     id, name, titleLevel, createDate, enabled
   </sql>
 
+  <select id="getTotal" resultType="java.lang.Long">
+    select count(*) from joblevel;
+  </select>
+
+  <select id="getJobLevelByPage" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from joblevel
+    <if test="page != null and size != null">
+      limit #{page}, #{size}
+    </if>
+  </select>
+
   <delete id="deleteByIds">
     delete from joblevel where id in
     <foreach collection="ids" item="id" separator="," open="(" close=")">

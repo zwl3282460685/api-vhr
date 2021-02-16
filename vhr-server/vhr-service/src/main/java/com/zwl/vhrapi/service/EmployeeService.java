@@ -62,7 +62,7 @@ public class EmployeeService {
         if(result == 1){
             Employee emp = employeeMapper.getEmployeeById(employee.getId());
             logger.info(emp.toString());
-            rabbitTemplate.convertAndSend("zwl.mail.welcome",emp);
+            rabbitTemplate.convertAndSend("zwl.mail.welcome",emp); //向rabbitmq中添加发送邮件的任务
         }
         return result;
     }

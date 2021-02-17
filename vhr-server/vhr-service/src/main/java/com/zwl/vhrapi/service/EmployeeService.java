@@ -2,12 +2,12 @@ package com.zwl.vhrapi.service;
 
 import com.zwl.vhrapi.mapper.EmployeeMapper;
 import com.zwl.vhrapi.mapper.NationMapper;
-import com.zwl.vhrapi.model.Employee;
-import com.zwl.vhrapi.model.Nation;
-import com.zwl.vhrapi.model.RespPageBean;
+import com.zwl.vhrapi.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,6 +16,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author zwl
@@ -33,6 +34,8 @@ public class EmployeeService {
     RabbitTemplate rabbitTemplate;
     @Resource
     NationMapper nationMapper;
+    @Autowired
+    MailSendLogService mailSendLogService;
 
     SimpleDateFormat yearDateFormat = new SimpleDateFormat("yyyy");
     SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
@@ -61,8 +64,16 @@ public class EmployeeService {
         int result = employeeMapper.insertSelective(employee);
         if(result == 1){
             Employee emp = employeeMapper.getEmployeeById(employee.getId());
-            logger.info(emp.toString());
-            rabbitTemplate.convertAndSend("zwl.mail.welcome",emp); //向rabbitmq中添加发送邮件的任务
+            String msgId = UUID.randomUUID().toString(); //生成rabbitmq消息的id
+            MailSendLog mailSendLog = new MailSendLog();
+            mailSendLog.setMsgId(msgId);
+            mailSendLog.setCreateTime(new Date());
+            mailSendLog.setExchange(MailConstants.MAIL_EXCHANGE_NAME);
+            mailSendLog.setRouteKey(MailConstants.MAIL_ROUTING_KEY_NAME);
+            mailSendLog.setEmpId(emp.getId());
+            mailSendLog.setTryTime(new Date(System.currentTimeMillis() + 1000 * 60 * MailConstants.MSG_TIMEOUT));
+            mailSendLogService.insertMailSendLog(mailSendLog);
+            rabbitTemplate.convertAndSend(MailConstants.MAIL_EXCHANGE_NAME,MailConstants.MAIL_ROUTING_KEY_NAME,emp, new CorrelationData(msgId)); //向rabbitmq中添加发送邮件的任务
         }
         return result;
     }
@@ -107,5 +118,9 @@ public class EmployeeService {
      */
     public int deletePositionByIds(Integer[] ids) {
         return employeeMapper.deleteEmpByIds(ids);
+    }
+
+    public Employee getEmployeeById(Integer empId) {
+        return employeeMapper.getEmployeeById(empId);
     }
 }
